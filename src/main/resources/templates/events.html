@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Events</title>
+    <div th:replace="fragments/header :: headercss"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header-fragment"></div>
+<ul th:each="event : ${events}">
+    <li th:text="*{event.name}"></li>
+    <a class="btn btn-primary btn-sm" role="button" th:href="@{/sign-up-for-event/{uuid} (uuid=${event.getId()})}">
+        Chcę jechać
+    </a>
+    <span><a class="btn btn-secondary btn-sm" role="button" th:href="@{/who-goes/{uuid} (uuid=${event.getId()})}">Kto jedzie</a></span>
+</ul>
+<br>
+<div>
+    <h4>Wyszukaj wydarzenie</h4>
+    <form method="get" action="/events-browser">
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label for="event">Nazwa wydarzenia</label>
+                <input id="event" class="form-control" type="text" name="keyword" th:value="${invalidKeyword}">
+            </div>
+            <div class="form-group col-md-1">
+                <label for="country">Kraj</label><br>
+                <select class="form-control" id="country" name="countries">
+                    <option th:each="country : ${countries}" th:value="${country}" th:text="${country.plName}"></option>
+                </select>
+            </div>
+        </div>
+        <button class="btn btn-primary">Szukaj</button>
+    </form>
+    <p th:if="${notFoundMessage eq 'notFound'}" th:text="${'Nie znaleziono wydarzenia'}"></p>
+</div>
+</body>
+</html>
