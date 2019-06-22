@@ -1,0 +1,42 @@
+div.gallery {
+    margin: 0.25%;
+    padding: 0.25%;
+    border: 1px solid #ccc;
+    float: left;
+    width: 24.5%;
+    height: fit-content;
+}
+
+div.gallery:hover {
+    border: 1px solid #777;
+}
+
+div.gallery img {
+    width: 100%;
+    height: 75%;
+}
+
+div.desc.title {
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: left;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #111111;
+}
+
+div.desc.add {
+    width: 100%;
+    display: flex;
+    padding-bottom: 5px;
+    text-align: left;
+}
+
+div.button {
+    width: 100%;
+    padding-top: 5px;
+}
+

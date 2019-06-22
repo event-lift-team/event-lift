@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.sda.eventlift.events.model.Countries;
 import pl.sda.eventlift.stakeholders.dto.StakeholderDTO;
 import pl.sda.eventlift.stakeholders.services.StakeholderRegistrationService;
 
@@ -21,6 +22,7 @@ public class RegistrationController {
     @GetMapping(value = "/register")
     public String showForm(Model model){
         StakeholderDTO dto = new StakeholderDTO();
+        model.addAttribute("countries", Countries.values());
         model.addAttribute("dto", dto);
         return "register-page";
     }
@@ -31,6 +33,7 @@ public class RegistrationController {
             return "register-page";
         }
         stakeholderRegistrationService.registerStakeholder(dto);
+        model.addAttribute("countries", Countries.values());
         return "index";
     }
 }

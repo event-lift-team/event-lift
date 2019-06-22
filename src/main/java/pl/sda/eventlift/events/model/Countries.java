@@ -7,7 +7,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Countries {
     PL("Polska"),
-    US("USA");
+    DE("Niemcy"),
+    CZ("Czechy"),
+    FR("Francja"),
+    AT("Austria"),
+    BE("Belgia"),
+    CH("Szwajcaria");
 
     String plName;
 }

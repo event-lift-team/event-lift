@@ -22,11 +22,12 @@ public class Stakeholder extends BaseEntity {
     private String lastName;
     private String email;
     private String passwordHash;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "stakeholders_events",
-            joinColumns = @JoinColumn(name = "stakeholder_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_id"))
-    private Set<Event> events = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name = "hitchhiker_id")
+    private Hitchhiker hitchhiker;
+    @OneToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
     @ManyToMany
     @JoinTable(name = "stakeholders_roles",
             joinColumns = @JoinColumn(name = "stakeholder_id"),

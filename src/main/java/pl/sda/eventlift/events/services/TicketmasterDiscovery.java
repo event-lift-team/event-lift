@@ -21,6 +21,7 @@ public interface TicketmasterDiscovery {
     @GET("discovery/v2/events.json")
     CompletableFuture<EventsWrapper> findEventsByKeyword(
             @Query("countryCode") Countries countryCode,
+            @Query("city") String city,
             @Query("keyword") String keyword,
             @Query("sort") String sort,
             @Query("size") String size,

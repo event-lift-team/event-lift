@@ -2,11 +2,10 @@ package pl.sda.eventlift.events.model;
 
 import lombok.*;
 import pl.sda.eventlift.configs.BaseEntity;
-import pl.sda.eventlift.stakeholders.model.Stakeholder;
+import pl.sda.eventlift.stakeholders.model.Driver;
+import pl.sda.eventlift.stakeholders.model.Hitchhiker;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Getter
@@ -21,5 +20,7 @@ public class Event extends BaseEntity {
     private String name;
     private String uuid;
     @ManyToMany(mappedBy = "events")
-    private Set<Stakeholder> stakeholders;
+    private Set<Driver> drivers;
+    @ManyToMany(mappedBy = "events")
+    private Set<Hitchhiker> hitchhikers;
 }

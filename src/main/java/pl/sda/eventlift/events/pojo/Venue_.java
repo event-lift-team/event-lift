@@ -52,6 +52,13 @@ public class Venue_ {
     @Expose
     private Links_ links;
 
+    public String getCityAndName(){
+        if (name == null){
+            return city.getName();
+        }
+        return city.getName() + ", " + name;
+    }
+
     public String getName() {
         return name;
     }

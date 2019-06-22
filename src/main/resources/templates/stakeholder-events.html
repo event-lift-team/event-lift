@@ -7,8 +7,15 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header-fragment"></div>
-<ul th:each="event : ${stakeholderEvents}">
-    <li th:text="*{event.name}"></li>
-</ul>
+<div style="margin: 10px; padding: 5px;">
+    <p>Jadę jako kierowca: </p>
+    <ul th:each="event : ${stakeholderEventsAsDriver}">
+        <li th:text="*{event.name}"></li>
+    </ul>
+    <p>Jadę jako autostopowicz: </p>
+    <ul th:each="event : ${stakeholderEventsAsHitchhiker}">
+        <li th:text="*{event.name}"></li>
+    </ul>
+</div>
 </body>
 </html>

@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/events").permitAll()
                 .antMatchers("/events-browser").permitAll()
                 .antMatchers("/css/**").permitAll()
+                .antMatchers("/js/**").permitAll()
                 .antMatchers("/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .anyRequest().permitAll()
                 .and().csrf().disable()
@@ -37,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("loginPassword")
                 .loginProcessingUrl("/processLogin")
                 .failureUrl("/login?error=1")
-                .defaultSuccessUrl("/");
+                .defaultSuccessUrl("/events");
     }
 
     @Override

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign for event</title>
+    <div th:replace="fragments/header :: headercss"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header-fragment"></div>
+<h4 style="margin-left: 10px">Podsumowanie zapisu na wydarzenie</h4>
+<div style="margin: 10px; padding: 5px;" class="border border-primary">
+    <form style="margin-left: 15px"
+          th:action="@{'/sign-up-for-event/hitch-hiking/' + ${eventDto.getId()} + '/' + ${driver.id}}" method="post"
+          th:object="${eventDto}">
+        <h5>Dane na temat wydarzenia</h5>
+        <div class="form-row">
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <label for="eventName" class="control-label">Nazwa wydarzenia</label>
+                <input class="form-control" id="eventName" th:size="*{name.length()}" type="text" th:field="*{name}"
+                       readonly>
+            </div>
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <label for="eventDate">Data i czas wydarzenia</label>
+                <input class="form-control" id="eventDate" th:size="*{18}" type="text"
+                       th:field="*{dates.start.localDateAndTime}" readonly>
+            </div>
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <label for="eventPlace">Miejsce wydarzenia</label>
+                <input class="form-control" id="eventPlace" th:size="*{embedded.venue.cityAndName.length()}" type="text"
+                       th:field="*{embedded.venue.cityAndName}" readonly>
+            </div>
+        </div>
+        <h5>Dane na temat transportu</h5>
+        <div class="form-row">
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <label for="firstName">Imię kierowcy</label>
+                <input class="form-control" id="firstName" th:size="${driver.firstName}"
+                       type="text" th:value="${driver.firstName}" readonly>
+            </div>
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <label for="freeSeats">Liczba wolnych miejsc</label>
+                <input class="form-control" id="freeSeats" type="number"
+                       th:value="${transportInfo.numberOfSeats}" readonly>
+            </div>
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <label for="startLocation">Skąd wyjeżdza</label>
+                <input class="form-control" id="startLocation" type="text"
+                       th:value="${transportInfo.startLocation}" readonly>
+            </div>
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <label for="startTime">O której start</label>
+                <input class="form-control" id="startTime" type="text"
+                       th:value="${transportInfo.startTime}" readonly>
+            </div>
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <input class="form-control" th:size="${@stakeholderContext.provideUsername().length()}"
+                       type="hidden"
+                       th:name="${'stakeholderDtoEmail'}" th:if="${@stakeholderContext.isLoggedIn()}"
+                       th:value="${@stakeholderContext.provideUsername()}" readonly>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-xs-3 form-group input-group-sm mb-3">
+                <label for="additionalInf">Dodatkowe informacje</label>
+                <textarea style="resize: none" class="form-control" rows="5" cols="50" id="additionalInf"
+                          th:text="${transportInfo.additionalInformation}"
+                          readonly></textarea>
+            </div>
+        </div>
+        <button class="btn btn-primary">Zapisz</button>
+    </form>
+    <p th:if="${signInMessage eq 'cannotSign'}"
+       th:text="${'nie możesz zapisać się na wydarzenie jako kierowca i autostopowicz'}"></p>
+    <p th:if="${signInMessage eq 'alreadySigned'}"
+       th:text="${'już zapisałeś się jako autosopowicz na to wydarzenie'}"></p>
+</div>
+
+</body>
+</html>

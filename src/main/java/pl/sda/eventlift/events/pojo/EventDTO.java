@@ -75,6 +75,12 @@ public class EventDTO {
         stakeholders.remove(stakeholder);
     }
 
+    public String getEventImageUrl(){
+        return images.stream()
+                .filter(image -> image.getRatio().equals("4_3"))
+                .findFirst().orElse(images.get(0)).getUrl();
+    }
+
     public String getName() {
         return name;
     }

@@ -15,6 +15,10 @@ public class Embedded_ {
     @Expose
     private List<Attraction_> attractions = null;
 
+    public Venue_ getVenue() {
+        return venues.get(0);
+    }
+
     public List<Venue_> getVenues() {
         return venues;
     }

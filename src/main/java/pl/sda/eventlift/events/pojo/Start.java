@@ -3,7 +3,10 @@ package pl.sda.eventlift.events.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import lombok.Builder;
+import lombok.Getter;
 
+@Builder
 public class Start {
 
     @SerializedName("localDate")
@@ -37,7 +40,17 @@ public class Start {
     }
 
     public String getLocalTime() {
+        if (localTime == null) {
+            return "00:00";
+        }
         return localTime;
+    }
+
+    public String getLocalDateAndTime(){
+        if (localTime == null){
+            return localDate;
+        }
+        return localDate + " " + localTime;
     }
 
     public void setLocalTime(String localTime) {

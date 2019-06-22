@@ -7,8 +7,22 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header-fragment"></div>
-<ul>
-    <li th:each="stakeholder : ${stakeholders}" th:text="*{stakeholder.email}"></li>
-</ul><br>
+<div style="margin: 10px; padding: 5px;">
+    <p>Kierowcy:</p>
+    <ul th:each="driver : ${drivers}">
+        <li th:text="*{driver.email}"></li>
+        <span>
+        <a class="btn btn-primary btn-sm" role="button"
+           th:href="@{'/sign-up-for-event/hitch-hiking/' + ${eventUuid} + '/' + ${driver.id}}">
+        Rezerwuję miejsce
+    </a></span>
+    </ul>
+    <br>
+    <p>Autostopowicze:</p>
+    <ul>
+        <li th:each="hitchhiker : ${hitchhikers}" th:text="*{hitchhiker.email}"></li>
+    </ul>
+    <br>
+</div>
 </body>
 </html>

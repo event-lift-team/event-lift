@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import pl.sda.eventlift.events.pojo.EventDTO;
-import pl.sda.eventlift.events.services.EventsService;
-import pl.sda.eventlift.stakeholders.model.Stakeholder;
-import pl.sda.eventlift.stakeholders.services.SigningService;
-import pl.sda.eventlift.stakeholders.services.StakeholderService;
+import pl.sda.eventlift.events.model.Countries;
+import pl.sda.eventlift.stakeholders.model.Driver;
+import pl.sda.eventlift.stakeholders.model.Hitchhiker;
+import pl.sda.eventlift.stakeholders.services.DriverSigningService;
+import pl.sda.eventlift.stakeholders.services.HitchhikerSigningService;
 
 import java.util.Set;
 
@@ -19,39 +17,28 @@ import java.util.Set;
 public class SigningController {
 
     @Autowired
-    private SigningService signingService;
+    private DriverSigningService driverSigningService;
 
     @Autowired
-    private EventsService eventsService;
-
-    @Autowired
-    private StakeholderService stakeholderService;
-
-    @GetMapping(value = "/sign-up-for-event/{id}")
-    public String getSignUpForEventForm(@PathVariable String id, Model model){
-        EventDTO eventDtoById = eventsService.findEventDtoById(id);
-        model.addAttribute("eventDto", eventDtoById);
-        return "sign-up-for-event";
-    }
-
-    @PostMapping(value = "/sign-up-for-event/{id}")
-    public String signUpForEvent(@PathVariable String id, @ModelAttribute(value = "stakeholderDtoEmail") String stakeholderDtoEmail) {
-        signingService.relateStakeholderWithEvent(stakeholderDtoEmail, id);
-        return "redirect:/events";
-    }
+    private HitchhikerSigningService hitchhikerSigningService;
 
     @GetMapping(value = "/who-goes/{id}")
-    private String checkWhoGoes(@PathVariable (required = false) String id, Model model){
-        if(signingService.getStakeholdersByEventId(id) == null){
+    public String checkWhoGoes(@PathVariable(required = false) String id, Model model) {
+        if (driverSigningService.getDriversByEventId(id) == null) {
             return "redirect:/nobody-goes";
         }
-        Set<Stakeholder> stakeholders = signingService.getStakeholdersByEventId(id);
-        model.addAttribute("stakeholders", stakeholders);
+        Set<Driver> drivers = driverSigningService.getDriversByEventId(id);
+        Set<Hitchhiker> hitchhikers = hitchhikerSigningService.getHitchhikersByEventId(id);
+        model.addAttribute("countries", Countries.values());
+        model.addAttribute("drivers", drivers);
+        model.addAttribute("hitchhikers", hitchhikers);
+        model.addAttribute("eventUuid", id);
         return "who-goes";
     }
 
     @GetMapping(value = "nobody-goes")
-    public String nobodyGoes(){
+    public String nobodyGoes(Model model) {
+        model.addAttribute("countries", Countries.values());
         return "nobody-goes";
     }
 }

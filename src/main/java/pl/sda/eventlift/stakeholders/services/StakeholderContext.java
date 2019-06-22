@@ -22,11 +22,26 @@ public class StakeholderContext {
         return authentication.getName();
     }
 
+    public String provideFirstName(){
+        if(provideUsername() != null){
+            String username = provideUsername();
+            return stakeholderRepository.findByEmail(username).getFirstName();
+        }
+        return null;
+    }
+
+    public String provideLastName(){
+        if(provideUsername() != null){
+            String username = provideUsername();
+            return stakeholderRepository.findByEmail(username).getLastName();
+        }
+        return null;
+    }
+
     public Long provideId() {
         if(provideUsername() != null){
             String username = provideUsername();
-            Stakeholder stakeholder = stakeholderRepository.findByEmail(username);
-            return stakeholder.getId();
+            return stakeholderRepository.findByEmail(username).getId();
         }
         return null;
     }

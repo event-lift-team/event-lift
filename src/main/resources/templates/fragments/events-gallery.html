@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="events-gallery" class="gallery" th:each="event : ${eventPage.content}">
+    <div class="desc title" th:text="*{event.name}"></div>
+    <div class="desc add" th:text="*{event.embedded.venue.cityAndName + ' - ' + event.dates.start.localDate}"></div>
+    <img th:src="*{event.eventImageUrl}">
+    <div class="button">
+        <a class="btn btn-outline-primary btn-sm" role="button"
+           th:href="@{/sign-up-for-event/{uuid} (uuid=${event.getId()})}">
+            Chcę jechać</a>
+        <span>
+            <a class="btn btn-outline-secondary btn-sm" role="button"
+               th:href="@{/who-goes/{uuid} (uuid=${event.getId()})}">Kto jedzie</a>
+            </span>
+    </div>
+</div>
+</html>
