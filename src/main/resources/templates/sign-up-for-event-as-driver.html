@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign for event</title>
+    <div th:replace="fragments/header :: headercss"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header-fragment"></div>
+<h4 style="margin-left: 10px">Podsumowanie zapisu na wydarzenie</h4>
+<div style="margin: 10px; padding: 5px;" class="card-group border border-primary row">
+    <div class="card border-0">
+        <div class="card-body">
+            <h5 class="card-title">Dane na temat wydarzenia</h5>
+            <form style="margin-left: 15px" th:action="@{/sign-up-for-event/{uuid} (uuid=${eventDto.getId()})}"
+                  method="post"
+                  th:object="${eventDto}">
+                <div class="form-row">
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="eventName" class="control-label">Nazwa wydarzenia</label>
+                        <input class="form-control" id="eventName" th:size="*{name.length()}" type="text"
+                               th:field="*{name}"
+                               readonly>
+                    </div>
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="eventDate">Data i czas wydarzenia</label>
+                        <input class="form-control" id="eventDate" th:size="*{18}" type="text"
+                               th:field="*{dates.start.localDateAndTime}" readonly>
+                    </div>
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="eventPlace">Miejsce wydarzenia</label>
+                        <input class="form-control" id="eventPlace" th:size="*{embedded.venue.cityAndName.length() + 1}"
+                               type="text"
+                               th:field="*{embedded.venue.cityAndName}" readonly>
+                    </div>
+                </div>
+                <h5>Twoje dane</h5>
+                <div class="form-row">
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="firstName">Imię</label>
+                        <input class="form-control" id="firstName"
+                               th:size="${@stakeholderContext.provideFirstName().length()}"
+                               type="text"
+                               th:if="${@stakeholderContext.isLoggedIn()}"
+                               th:value="${@stakeholderContext.provideFirstName()}" readonly>
+                    </div>
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="lastName">Nazwisko</label>
+                        <input class="form-control" id="lastName"
+                               th:size="${@stakeholderContext.provideLastName().length()}"
+                               type="text"
+                               th:if="${@stakeholderContext.isLoggedIn()}"
+                               th:value="${@stakeholderContext.provideLastName()}" readonly>
+                    </div>
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <input class="form-control" th:size="${@stakeholderContext.provideUsername().length()}"
+                               type="hidden"
+                               th:name="${'stakeholderDtoEmail'}" th:if="${@stakeholderContext.isLoggedIn()}"
+                               th:value="${@stakeholderContext.provideUsername()}" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="startLocation">Skąd ruszam</label>
+                        <input class="form-control" id="startLocation" type="text" name="startLocation" required>
+                    </div>
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="noOfSeats">Liczba miejsc</label>
+                        <input class="form-control" id="noOfSeats" name="noOfSeats" type="number" max="6" min="1"
+                               value="1">
+                    </div>
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="startDate">Data wyjazdu</label>
+                        <input class="form-control" id="startDate" type="date" th:value="${today}"
+                               th:max="*{dates.start.localDate}" name="startDate" required>
+                    </div>
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="startTime">Godzina wyjazdu</label>
+                        <input id="startTime" class="form-control" type="time" value="00:00" min="00:00"
+                               th:max="*{dates.start.localTime}" name="startTime" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-xs-3 form-group input-group-sm mb-3">
+                        <label for="additionalInf">Dodatkowe informacje</label>
+                        <textarea class="form-control" id="additionalInf" rows="5" cols="50"
+                                  name="additionalInf"></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-primary ">Zapisz</button>
+            </form>
+        </div>
+
+    </div>
+    <div class="card border-0">
+        <div class="card-body">
+            <h5 class="card-title">Sprawdź miejsce wydarzenia na mapie</h5>
+            <div style="width: 80%; height: 80%" id="mapid"></div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        var latitude = [[${latitude}]];
+        var longitude = [[${longitude}]];
+        var cityAndName = [[${cityAndName}]];
+        var eventMap = L.map('mapid').setView([latitude, longitude], 15);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicHJ6ZW1la3Nsb3dpayIsImEiOiJjang2M244NjEwOGpwNGFwY254aXo5dHUwIn0.3tmORGexCNza3UB-HdVoKg', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox.streets'
+        }).addTo(eventMap);
+        var marker = L.marker([latitude, longitude]).addTo(eventMap);
+        marker.bindPopup(cityAndName).openPopup();
+    </script>
+</div>
+<p th:if="${signInMessage eq 'cannotSign'}"
+   th:text="${'nie możesz zapisać się na wydarzenie jako kierowca i autostopowicz'}"></p>
+<p th:if="${signInMessage eq 'alreadySigned'}" th:text="${'już zapisałeś się jako kierowca na to wydarzenie'}"></p>
+
+</body>
+</html>
