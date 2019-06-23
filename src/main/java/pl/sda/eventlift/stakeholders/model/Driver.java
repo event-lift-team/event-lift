@@ -31,5 +31,7 @@ public class Driver extends BaseEntity {
     private Set<Event> events;
     @OneToMany(mappedBy = "driver")
     private Set<TransportInfo> information;
+    @ManyToMany(mappedBy = "drivers")
+    Set<Hitchhiker> hitchhikers;
 
 }

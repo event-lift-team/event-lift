@@ -17,8 +17,8 @@ public class StakeholderController {
     @GetMapping(value = "stakeholder-events/{id}")
     public String showStakeholderEvents(@PathVariable(value = "id") Long stakeholderId, Model model) {
         model.addAttribute("countries", Countries.values());
-        model.addAttribute("stakeholderEventsAsDriver", stakeholderService.getStakeholderEvents(stakeholderId, "Driver"));
-        model.addAttribute("stakeholderEventsAsHitchhiker", stakeholderService.getStakeholderEvents(stakeholderId, "Hitch-hiker"));
+        model.addAttribute("stakeholderEventsAsDriver", stakeholderService.getActualStakeholderEvents(stakeholderId, "Driver"));
+        model.addAttribute("stakeholderEventsAsHitchhiker", stakeholderService.getActualStakeholderEvents(stakeholderId, "Hitch-hiker"));
         return "stakeholder-events";
     }
 
