@@ -20,8 +20,12 @@ import java.util.stream.IntStream;
 @Controller
 public class EventsController {
 
-    @Autowired
     private EventsService eventsService;
+
+    @Autowired
+    public EventsController(EventsService eventsService) {
+        this.eventsService = eventsService;
+    }
 
     @GetMapping(value = "/events")
     public String getEvents(@RequestParam(required = false) String invalidKeyword,
@@ -36,13 +40,7 @@ public class EventsController {
 
         model.addAttribute("eventPage", eventDTOPage);
 
-        int totalPages = eventDTOPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        pageNumberAttributePreparation(model, eventDTOPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("countries", Countries.values());
         model.addAttribute("notFoundMessage", message);
@@ -67,6 +65,16 @@ public class EventsController {
         if (eventDTOPage.isEmpty()) {
             return "redirect:/events?message=notFound&invalidKeyword=" + keyword + "&invalidCity=" + city;
         }
+        pageNumberAttributePreparation(model, eventDTOPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("countries", Countries.values());
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("country", country);
+        model.addAttribute("city", city);
+        return "events-browser";
+    }
+
+    private void pageNumberAttributePreparation(Model model, Page<EventDTO> eventDTOPage) {
         int totalPages = eventDTOPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -74,11 +82,5 @@ public class EventsController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("countries", Countries.values());
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("country", country);
-        model.addAttribute("city", city);
-        return "events-browser";
     }
 }

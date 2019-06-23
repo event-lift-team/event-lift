@@ -11,19 +11,21 @@ import pl.sda.eventlift.information.repositories.TransportInfoRepository;
 import pl.sda.eventlift.stakeholders.model.Driver;
 import pl.sda.eventlift.stakeholders.repositories.DriverRepository;
 
-import java.time.LocalDateTime;
-
 @Service
 public class TransportInfoService {
 
-    @Autowired
     private TransportInfoRepository transportInfoRepository;
-
-    @Autowired
     private EventRepository eventRepository;
+    private DriverRepository driverRepository;
 
     @Autowired
-    private DriverRepository driverRepository;
+    public TransportInfoService(TransportInfoRepository transportInfoRepository,
+                                EventRepository eventRepository,
+                                DriverRepository driverRepository) {
+        this.transportInfoRepository = transportInfoRepository;
+        this.eventRepository = eventRepository;
+        this.driverRepository = driverRepository;
+    }
 
     public TransportInfo getDriverTransportInfo(String eventDtoId, Long driverId) {
         Driver driver = driverRepository.findById(driverId).get();
@@ -47,9 +49,7 @@ public class TransportInfoService {
                 TransportInfo information = transportInfoRepository.findByDriverAndEvent(driver, event);
                 information.setStartLocation(dto.getStartLocation());
                 information.setNumberOfSeats(dto.getNumberOfSeats());
-                information.setStartTime(LocalDateTime.of(
-                        dto.getStartDate(),
-                        dto.getStartTime()));
+                information.setStartTime(dto.getStartTime());
                 information.setAdditionalInformation(StringUtils.isBlank(dto.getAdditionalInformation()) ? "Kierowca nie podał dodatkowych informacji" : dto.getAdditionalInformation());
                 transportInfoRepository.save(information);
             } else {
@@ -66,9 +66,9 @@ public class TransportInfoService {
         return TransportInfo.builder()
                 .startLocation(dto.getStartLocation())
                 .numberOfSeats(dto.getNumberOfSeats())
-                .startTime(LocalDateTime.of(
-                        dto.getStartDate(),
-                        dto.getStartTime()))
+                .startTime(dto.getStartTime())
                 .additionalInformation(StringUtils.isBlank(dto.getAdditionalInformation()) ? "Kierowca nie podał dodatkowych informacji" : dto.getAdditionalInformation()).build();
     }
+
+
 }

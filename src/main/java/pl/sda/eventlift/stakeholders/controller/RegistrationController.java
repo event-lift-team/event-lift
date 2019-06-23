@@ -16,11 +16,15 @@ import javax.validation.Valid;
 @Controller
 public class RegistrationController {
 
-    @Autowired
     private StakeholderRegistrationService stakeholderRegistrationService;
 
+    @Autowired
+    public RegistrationController(StakeholderRegistrationService stakeholderRegistrationService) {
+        this.stakeholderRegistrationService = stakeholderRegistrationService;
+    }
+
     @GetMapping(value = "/register")
-    public String showForm(Model model){
+    public String showForm(Model model) {
         StakeholderDTO dto = new StakeholderDTO();
         model.addAttribute("countries", Countries.values());
         model.addAttribute("dto", dto);
@@ -28,8 +32,8 @@ public class RegistrationController {
     }
 
     @PostMapping(value = "/register")
-    public String register(@ModelAttribute(name = "dto") @Valid StakeholderDTO dto, BindingResult result, Model model){
-        if (result.hasErrors()){
+    public String register(@ModelAttribute(name = "dto") @Valid StakeholderDTO dto, BindingResult result, Model model) {
+        if (result.hasErrors()) {
             return "register-page";
         }
         stakeholderRegistrationService.registerStakeholder(dto);

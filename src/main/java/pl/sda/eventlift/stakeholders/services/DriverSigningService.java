@@ -20,24 +20,27 @@ import java.util.Set;
 @Service
 public class DriverSigningService {
 
-    @Autowired
     private EventRepository eventRepository;
-
-    @Autowired
     private EventsService eventsService;
-
-    @Autowired
     private DriverRepository driverRepository;
-
-    @Autowired
     private StakeholderRepository stakeholderRepository;
-
-    @Autowired
     private HitchhikerRepository hitchhikerRepository;
-
-    @Autowired
     private TransportInfoService transportInfoService;
 
+    @Autowired
+    public DriverSigningService(EventRepository eventRepository,
+                                EventsService eventsService,
+                                DriverRepository driverRepository,
+                                StakeholderRepository stakeholderRepository,
+                                HitchhikerRepository hitchhikerRepository,
+                                TransportInfoService transportInfoService) {
+        this.eventRepository = eventRepository;
+        this.eventsService = eventsService;
+        this.driverRepository = driverRepository;
+        this.stakeholderRepository = stakeholderRepository;
+        this.hitchhikerRepository = hitchhikerRepository;
+        this.transportInfoService = transportInfoService;
+    }
 
     public String relateDriverWithEvent(String driverEmail, String eventDtoId, TransportInfoDTO informationDto) {
         if (hitchhikerRepository.existsByEmail(driverEmail)

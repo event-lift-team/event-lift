@@ -16,11 +16,15 @@ import java.util.Set;
 @Controller
 public class SigningController {
 
-    @Autowired
     private DriverSigningService driverSigningService;
+    private HitchhikerSigningService hitchhikerSigningService;
 
     @Autowired
-    private HitchhikerSigningService hitchhikerSigningService;
+    public SigningController(DriverSigningService driverSigningService,
+                             HitchhikerSigningService hitchhikerSigningService) {
+        this.driverSigningService = driverSigningService;
+        this.hitchhikerSigningService = hitchhikerSigningService;
+    }
 
     @GetMapping(value = "/who-goes/{id}")
     public String checkWhoGoes(@PathVariable(required = false) String id, Model model) {
