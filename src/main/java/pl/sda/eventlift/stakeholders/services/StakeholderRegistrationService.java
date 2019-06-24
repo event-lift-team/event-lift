@@ -1,7 +1,6 @@
 package pl.sda.eventlift.stakeholders.services;
 
 import com.google.common.collect.Sets;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.eventlift.roles.RoleRepository;
@@ -12,18 +11,21 @@ import pl.sda.eventlift.stakeholders.repositories.StakeholderRepository;
 @Service
 public class StakeholderRegistrationService {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
+    private PasswordEncoder passwordEncoder;
     private StakeholderRepository stakeholderRepository;
-
-    @Autowired
     private RoleRepository roleRepository;
+
+    public StakeholderRegistrationService(PasswordEncoder passwordEncoder,
+                                          StakeholderRepository stakeholderRepository,
+                                          RoleRepository roleRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.stakeholderRepository = stakeholderRepository;
+        this.roleRepository = roleRepository;
+    }
 
     public void registerStakeholder(StakeholderDTO dto) {
         Stakeholder stakeholder = stakeholderToEntity(dto);
-        if( stakeholderRepository.existsByEmail(stakeholder.getEmail())){
+        if (stakeholderRepository.existsByEmail(stakeholder.getEmail())) {
             throw new RuntimeException(("User with email: " + stakeholder.getEmail() + "exists"));
         } else {
             stakeholderRepository.save(stakeholder);

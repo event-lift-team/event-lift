@@ -15,17 +15,21 @@ import pl.sda.eventlift.stakeholders.repositories.StakeholderRepository;
 @Component
 public class DataInitializer implements InitializingBean {
 
-    @Autowired
     private StakeholderRepository stakeholderRepository;
-
-    @Autowired
     private EventRepository eventRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
+    private RoleRepository roleRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    public DataInitializer(StakeholderRepository stakeholderRepository,
+                           EventRepository eventRepository,
+                           PasswordEncoder passwordEncoder,
+                           RoleRepository roleRepository) {
+        this.stakeholderRepository = stakeholderRepository;
+        this.eventRepository = eventRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+    }
 
     public void afterPropertiesSet() {
         if(roleRepository.count() == 0){

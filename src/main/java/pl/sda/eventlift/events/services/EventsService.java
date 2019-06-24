@@ -28,34 +28,32 @@ public class EventsService {
     private final String SIZE = "100";
 
     public Page<EventDTO> findEventsByKeywordPaginated(Pageable pageable, String keyword, Countries countries, String city) {
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        List<EventDTO> subEventDTOList;
-        List<EventDTO> eventDTOList = prepareEventListByKeyword(keyword, countries, city);
-        subEventDTOList = getEventDTOSublist(pageSize, startItem, eventDTOList);
-        return new PageImpl<>(subEventDTOList, PageRequest.of(currentPage, pageSize), eventDTOList.size());
+        return getPageableEventDTOList(pageable, prepareEventListByKeyword(keyword, countries, city));
     }
 
     public Page<EventDTO> findEventsPaginated(Pageable pageable) {
+        return getPageableEventDTOList(pageable, prepareEventList());
+    }
+
+    private Page<EventDTO> getPageableEventDTOList(Pageable pageable, List<EventDTO> eventDTOS) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
-        List<EventDTO> subEventDTOList;
-        List<EventDTO> eventDTOList = prepareEventList();
-        subEventDTOList = getEventDTOSublist(pageSize, startItem, eventDTOList);
-        return new PageImpl<>(subEventDTOList, PageRequest.of(currentPage, pageSize), eventDTOList.size());
+        List<EventDTO> subEventDTOList = getEventDTOSublist(pageSize, startItem, eventDTOS);
+        return new PageImpl<>(subEventDTOList, PageRequest.of(currentPage, pageSize), eventDTOS.size());
     }
 
     public Event eventToEntity(EventDTO eventDTO) {
-        return Event.builder().name(eventDTO.getName()).uuid(eventDTO.getId()).build();
+        return Event.builder()
+                .name(eventDTO.getName())
+                .uuid(eventDTO.getId())
+                .build();
     }
 
     public EventDTO findEventDtoById(String id) {
         TicketmasterDiscovery ticketmasterDiscovery = prepareTicketmasterDiscovery();
         CompletableFuture<EventDTO> eventById = ticketmasterDiscovery.findEventById(id, API_KEY);
-        EventDTO eventDTO = eventById.join();
-        return eventDTO;
+        return eventById.join();
     }
 
     private List<EventDTO> getEventDTOSublist(int pageSize, int startItem, List<EventDTO> eventDTOList) {

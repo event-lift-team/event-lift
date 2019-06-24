@@ -2,7 +2,6 @@ package pl.sda.eventlift.stakeholders.model;
 
 import lombok.*;
 import pl.sda.eventlift.configs.BaseEntity;
-import pl.sda.eventlift.events.model.Event;
 import pl.sda.eventlift.roles.Role;
 
 import javax.persistence.*;

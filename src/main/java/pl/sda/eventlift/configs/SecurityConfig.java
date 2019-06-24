@@ -14,14 +14,17 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    public SecurityConfig(PasswordEncoder passwordEncoder, DataSource dataSource) {
+        this.passwordEncoder = passwordEncoder;
+        this.dataSource = dataSource;
+    }
+
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception{
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/login").permitAll()
@@ -42,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .usersByUsernameQuery(
                         "SELECT s.email, s.password_hash, 1 " +

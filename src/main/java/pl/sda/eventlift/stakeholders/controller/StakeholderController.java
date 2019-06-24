@@ -11,8 +11,12 @@ import pl.sda.eventlift.stakeholders.services.StakeholderService;
 @Controller
 public class StakeholderController {
 
-    @Autowired
     private StakeholderService stakeholderService;
+
+    @Autowired
+    public StakeholderController(StakeholderService stakeholderService) {
+        this.stakeholderService = stakeholderService;
+    }
 
     @GetMapping(value = "stakeholder-events/{id}")
     public String showStakeholderEvents(@PathVariable(value = "id") Long stakeholderId, Model model) {

@@ -29,7 +29,8 @@ public class Driver extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
     private Set<Event> events;
-    @OneToMany(mappedBy = "driver")
+    @OneToMany(mappedBy = "driver",
+            fetch = FetchType.EAGER)
     private Set<TransportInfo> information;
 
 }

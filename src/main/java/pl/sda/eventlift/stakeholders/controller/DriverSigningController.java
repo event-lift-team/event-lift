@@ -12,15 +12,20 @@ import pl.sda.eventlift.information.dto.TransportInfoDTO;
 import pl.sda.eventlift.stakeholders.services.DriverSigningService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Controller
 public class DriverSigningController {
-    @Autowired
+
     private DriverSigningService driverSigningService;
+    private EventsService eventsService;
 
     @Autowired
-    private EventsService eventsService;
+    public DriverSigningController(DriverSigningService driverSigningService, EventsService eventsService) {
+        this.driverSigningService = driverSigningService;
+        this.eventsService = eventsService;
+    }
 
     @GetMapping(value = "/sign-up-for-event/{id}")
     public String getSignUpForEventAsDriverForm(@PathVariable String id, @RequestParam(required = false) String signInMessage, Model model) {
@@ -50,8 +55,7 @@ public class DriverSigningController {
         TransportInfoDTO informationDto = TransportInfoDTO.builder()
                 .startLocation(startLocation)
                 .numberOfSeats(numberOfSeats)
-                .startDate(startDate)
-                .startTime(startTime)
+                .startTime(LocalDateTime.of(startDate, startTime))
                 .additionalInformation(additionalInformation).build();
         if (driverSigningService.relateDriverWithEvent(stakeholderDtoEmail, id, informationDto).equals("ok")) {
             return "redirect:/events";

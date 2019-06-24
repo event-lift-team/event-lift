@@ -5,33 +5,36 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.sda.eventlift.stakeholders.model.Stakeholder;
 import pl.sda.eventlift.stakeholders.repositories.StakeholderRepository;
 
 @Service
 public class StakeholderContext {
 
+    private StakeholderRepository stakeholderRepository;
+
     @Autowired
-    StakeholderRepository stakeholderRepository;
+    public StakeholderContext(StakeholderRepository stakeholderRepository) {
+        this.stakeholderRepository = stakeholderRepository;
+    }
 
     public String provideUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication instanceof AnonymousAuthenticationToken) {
+        if (authentication instanceof AnonymousAuthenticationToken) {
             return null;
         }
         return authentication.getName();
     }
 
-    public String provideFirstName(){
-        if(provideUsername() != null){
+    public String provideFirstName() {
+        if (provideUsername() != null) {
             String username = provideUsername();
             return stakeholderRepository.findByEmail(username).getFirstName();
         }
         return null;
     }
 
-    public String provideLastName(){
-        if(provideUsername() != null){
+    public String provideLastName() {
+        if (provideUsername() != null) {
             String username = provideUsername();
             return stakeholderRepository.findByEmail(username).getLastName();
         }
@@ -39,7 +42,7 @@ public class StakeholderContext {
     }
 
     public Long provideId() {
-        if(provideUsername() != null){
+        if (provideUsername() != null) {
             String username = provideUsername();
             return stakeholderRepository.findByEmail(username).getId();
         }
