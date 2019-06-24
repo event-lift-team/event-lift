@@ -32,5 +32,7 @@ public class Driver extends BaseEntity {
     @OneToMany(mappedBy = "driver",
             fetch = FetchType.EAGER)
     private Set<TransportInfo> information;
+    @ManyToMany(mappedBy = "drivers")
+    Set<Hitchhiker> hitchhikers;
 
 }

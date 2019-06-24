@@ -1,0 +1,14 @@
+.alert-danger{
+    background-color: transparent;
+    border: unset;
+    color: firebrick;
+    font-weight: bold;
+    padding: 4px;
+    display: inline-block;
+}
+
+.alert-success{
+    font-size: small;
+    padding: 4px;
+    display: inline-block;
+}
