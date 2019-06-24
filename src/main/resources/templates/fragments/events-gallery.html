@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="events-gallery" class="gallery" th:each="event : ${eventPage.content}">
-    <div class="desc title" th:text="*{event.name}"></div>
-    <div class="desc add" th:text="*{event.embedded.venue.cityAndName + ' - ' + event.dates.start.localDate}"></div>
-    <img th:src="*{event.eventImageUrl}">
-    <div class="button">
-        <a class="btn btn-outline-primary btn-sm" role="button"
-           th:href="@{/sign-up-for-event/{uuid} (uuid=${event.getId()})}">
-            Chcę jechać</a>
-        <span>
-            <a class="btn btn-outline-secondary btn-sm" role="button"
-               th:href="@{/who-goes/{uuid} (uuid=${event.getId()})}">Kto jedzie</a>
-            </span>
+<div th:fragment="events-gallery" class="card-columns">
+    <div class="card" th:each="event : ${eventPage.content}">
+        <div class="card-body">
+            <h5 class="card-title" th:text="*{event.name}"></h5>
+            <p class="card-text" th:text="*{event.embedded.venue.cityAndName + ' - ' + event.dates.start.localDate}"></p>
+            <img class="gallery-img" th:src="*{event.eventImageUrl}">
+            <div class="button">
+                <a class="btn btn-outline-primary btn-sm" role="button"
+                   th:href="@{/sign-up-for-event/{uuid} (uuid=${event.getId()})}">
+                    Chcę jechać</a>
+                <span>
+                    <a class="btn btn-outline-secondary btn-sm" role="button"
+                       th:href="@{/who-goes/{uuid} (uuid=${event.getId()})}">Kto jedzie</a>
+                    </span>
+            </div>
+        </div>
     </div>
 </div>
 </html>

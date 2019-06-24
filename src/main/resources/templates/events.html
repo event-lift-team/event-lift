@@ -7,9 +7,12 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header-fragment"></div>
-<div>
-    <p th:if="${notFoundMessage eq 'notFound'}" th:text="${'Nie znaleziono wydarzenia'}"></p>
+
+<div class="alert alert-warning alert-dismissible" th:if="${notFoundMessage eq 'notFound'}">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <p th:text="${'Nie znaleziono wydarzenia'}"></p>
 </div>
+
 <div style="margin: 10px; padding-top: 10px">
     <h3>Nadchodzące wydarzenia</h3>
     <nav aria-label="Page navigation">

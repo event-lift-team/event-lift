@@ -1,0 +1,12 @@
+.badge-primary{
+    vertical-align: top;
+    font-size: xx-small;
+}
+
+.badge-danger{
+    vertical-align: central;
+}
+
+.badge-success{
+    vertical-align: central;
+}

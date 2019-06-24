@@ -1,5 +1,6 @@
 package pl.sda.eventlift.stakeholders.controller;
 
+import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,22 +17,26 @@ import pl.sda.eventlift.stakeholders.services.HitchhikerSigningService;
 @Controller
 public class HitchhikerSigningController {
 
-    @Autowired
     private HitchhikerSigningService hitchhikerSigningService;
-
-    @Autowired
     private EventsService eventsService;
-
-    @Autowired
     private TransportInfoService transportInfoService;
+    private DriverService driverService;
 
     @Autowired
-    private DriverService driverService;
+    public HitchhikerSigningController(HitchhikerSigningService hitchhikerSigningService,
+                                       EventsService eventsService,
+                                       TransportInfoService transportInfoService,
+                                       DriverService driverService) {
+        this.hitchhikerSigningService = hitchhikerSigningService;
+        this.eventsService = eventsService;
+        this.transportInfoService = transportInfoService;
+        this.driverService = driverService;
+    }
 
     @GetMapping(value = "/sign-up-for-event/hitch-hiking/{eventUuid}/{driverId}")
     public String getSignUpForEventFormAsHitchhiker(@PathVariable String eventUuid,
                                                     @PathVariable Long driverId,
-                                                    @RequestParam(required = false) String signInMessage, Model model) {
+                                                    @RequestParam(required = false) String signInMessage, Model model) throws ObjectNotFoundException {
         EventDTO eventDtoById = eventsService.findEventDtoById(eventUuid);
         TransportInfo transportInfo = transportInfoService.getDriverTransportInfo(eventUuid, driverId);
         Driver driver = driverService.getDriverById(driverId);

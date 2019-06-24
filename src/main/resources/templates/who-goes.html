@@ -8,21 +8,67 @@
 <body>
 <div th:replace="fragments/header :: header-fragment"></div>
 <div style="margin: 10px; padding: 5px;">
-    <p>Kierowcy:</p>
-    <ul th:each="driver : ${drivers}">
-        <li th:text="*{driver.email}"></li>
-        <span>
-        <a class="btn btn-primary btn-sm" role="button"
-           th:href="@{'/sign-up-for-event/hitch-hiking/' + ${eventUuid} + '/' + ${driver.id}}">
-        Rezerwuję miejsce
-    </a></span>
-    </ul>
-    <br>
-    <p>Autostopowicze:</p>
-    <ul>
-        <li th:each="hitchhiker : ${hitchhikers}" th:text="*{hitchhiker.email}"></li>
-    </ul>
-    <br>
+    <h4>Uczestnicy wydarzenia</h4>
+    <div class="border border-primary p-2">
+        <div class="card-columns">
+            <div class="card" th:each="driver : ${drivers}">
+                <div class="card-body">
+                    <h5 class="card-title"
+                        th:if="${driver.email eq @stakeholderContext.provideUsername()}"
+                        th:inline="text">
+                        [[${driver.firstName + ' ' + driver.lastName}]]
+                        <span th:text="${' to Ty!'}" class="badge badge-primary"></span>
+                    </h5>
+                    <h5 th:unless="${driver.email eq @stakeholderContext.provideUsername()}"
+                        class="card-title" th:text="${driver.firstName + ' ' + driver.lastName}">
+                    </h5>
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Liczba wolnych miejsc: '}]]
+                        <span class="badge"
+                              th:classappend="${transportInfoService.getDriverTransportInfo(eventUuid, driver).numberOfSeats eq 0} ? badge-danger : badge-success"
+                              th:text="${transportInfoService.getDriverTransportInfo(eventUuid, driver).numberOfSeats}">
+                        </span>
+                    </p>
+                    <div class="panel-heading">
+                        <h6 class="panel-title">
+                            <a class="collapser" data-toggle="collapse" th:href="'#' + ${driver.id}"
+                               th:if="${driver.email eq @stakeholderContext.provideUsername()}"
+                               th:text="${'Kogo zabieram'}">
+                                Kogo zabieram
+                            </a>
+                            <a class="collapser" data-toggle="collapse" th:href="'#' + ${driver.id}"
+                               th:unless="${driver.email eq @stakeholderContext.provideUsername()}"
+                               th:text="${'Kogo zabiera'}">
+                                Kogo zabiera
+                            </a>
+                        </h6>
+                    </div>
+                    <div th:id="${driver.id}" class="panel-collapse collapse in">
+                        <p class="hitch-hikers alert alert-danger"
+                           th:if="${driverService.getDriverEventHitchhikers(driver.id, eventUuid).isEmpty()}"
+                           th:text="${'Nikt się nie zapisał'}"></p>
+                        <p th:unless="${driverService.getDriverEventHitchhikers(driver.id, eventUuid).isEmpty()}"
+                           class="hitch-hikers"
+                           th:block
+                           th:each="hitchhiker : ${driverService.getDriverEventHitchhikers(driver.id, eventUuid)}"
+                           th:inline="text">
+                            [[${hitchhiker.firstName + ' ' + hitchhiker.lastName}]]
+                            <span th:if="${hitchhiker.email eq @stakeholderContext.provideUsername()}"
+                                  th:text="${'to Ty!'}"
+                                  class="badge badge-primary"></span>
+                        </p>
+                    </div>
+                    <a class="btn btn-primary btn-sm" role="button"
+                       th:href="@{'/sign-up-for-event/hitch-hiking/' + ${eventUuid} + '/' + ${driver.id}}"
+                       th:classappend="${transportInfoService.getDriverTransportInfo(eventUuid, driver).numberOfSeats eq 0
+                       || driver.email eq @stakeholderContext.provideUsername()} ? disabled">
+                        Rezerwuję miejsce
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

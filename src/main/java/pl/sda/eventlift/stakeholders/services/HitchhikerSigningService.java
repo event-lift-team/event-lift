@@ -1,7 +1,6 @@
 package pl.sda.eventlift.stakeholders.services;
 
 import com.google.common.collect.Sets;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.sda.eventlift.events.model.Event;
 import pl.sda.eventlift.events.pojo.EventDTO;
@@ -18,20 +17,23 @@ import java.util.Set;
 @Service
 public class HitchhikerSigningService {
 
-    @Autowired
     private EventRepository eventRepository;
-
-    @Autowired
     private EventsService eventsService;
-
-    @Autowired
     private DriverRepository driverRepository;
-
-    @Autowired
     private StakeholderRepository stakeholderRepository;
-
-    @Autowired
     private HitchhikerRepository hitchhikerRepository;
+
+    public HitchhikerSigningService(EventRepository eventRepository,
+                                    EventsService eventsService,
+                                    DriverRepository driverRepository,
+                                    StakeholderRepository stakeholderRepository,
+                                    HitchhikerRepository hitchhikerRepository) {
+        this.eventRepository = eventRepository;
+        this.eventsService = eventsService;
+        this.driverRepository = driverRepository;
+        this.stakeholderRepository = stakeholderRepository;
+        this.hitchhikerRepository = hitchhikerRepository;
+    }
 
     public String relateHitchhikerWithEvent(String hitchhikerEmail, String eventDtoId) {
         if (driverRepository.existsByEmail(hitchhikerEmail)
