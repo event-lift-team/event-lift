@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StakeholderService {
@@ -41,10 +42,9 @@ public class StakeholderService {
             if (stakeholderStatus.equals("Hitch-hiker") && stakeholderRepository.findById(stakeholderId).get().getHitchhiker() != null) {
                 Hitchhiker hitchhiker = stakeholderRepository.findById(stakeholderId).get().getHitchhiker();
                 events.addAll(hitchhiker.getDrivers().stream()
-                        .map(driver -> driver.getEvents().stream()
-                                .filter(event -> transportInfoService.getDriverTransportInfo(event.getUuid(), driver.getId()).getStartTime().isAfter(LocalDateTime.now()))
-                                .collect(Collectors.toSet()))
-                        .findFirst().orElseGet(Collections::emptySet));
+                        .flatMap(driver -> driver.getEvents().stream()
+                                .filter(event -> transportInfoService.getDriverTransportInfo(event.getUuid(), driver.getId()).getStartTime().isAfter(LocalDateTime.now())))
+                        .collect(Collectors.toSet()));
             }
             return events;
         }
