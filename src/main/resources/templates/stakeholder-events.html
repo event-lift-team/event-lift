@@ -7,15 +7,75 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header-fragment"></div>
+<h4 style="margin: 15px;">Jadę jako kierowca</h4>
 <div style="margin: 10px; padding: 5px;">
-    <p>Jadę jako kierowca: </p>
-    <ul th:each="event : ${stakeholderEventsAsDriver}">
-        <li th:text="*{event.name}"></li>
-    </ul>
-    <p>Jadę jako autostopowicz: </p>
-    <ul th:each="event : ${stakeholderEventsAsHitchhiker}">
-        <li th:text="*{event.name}"></li>
-    </ul>
+    <div class="card-columns">
+        <div class="card" th:each="event : ${stakeholderEventsAsDriver}">
+            <div class="card-body">
+                <h5 class="card-title" th:text="*{event.name}"></h5>
+                <img class="gallery-img-sm" th:src="*{eventsService.findEventDtoById(event.uuid).eventImageUrl}">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="collapser" data-toggle="collapse" th:href="'#' + ${event.uuid}">
+                            Szczegóły wydarzenia
+                        </a>
+                    </h6>
+                </div>
+                <div th:id="${event.uuid}" class="panel-collapse collapse in">
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Miejsce wydarzenia: '}]]
+                        <span th:text="${eventsService.findEventDtoById(event.uuid).embedded.venue.cityAndName}"></span>
+                    </p>
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Data wydarzenia: '}]]
+                        <span th:text="${eventsService.findEventDtoById(event.uuid).dates.start.localDateAndTime}"></span>
+                    </p>
+                </div>
+                <div class="panel-heading">
+                    <h6 class="panel-title" style="padding-top: 5px">
+                        <a class="collapser" data-toggle="collapse" th:href="'#' + ${driver.id} + '' + ${event.uuid}">Szczegóły wyjazdu</a>
+                        <span>
+                    <a role="button" style="text-decoration: none"
+                       th:href="@{/sign-up-for-event/{uuid} (uuid=${event.uuid})}">&nbsp;&nbsp;&nbsp;<i class="fa fa-edit"></i></a>
+                    </span>
+                    </h6>
+                </div>
+                <div th:id="${driver.id} + '' + ${event.uuid}" class="panel-collapse collapse in">
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Skąd wyjeżdzam: '}]]
+                        <span th:text="${transportInfoService.getDriverTransportInfo(event.uuid, driver.id).startLocation}">
+                            Miejsce startu
+                        </span>
+                    </p>
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Kiedy wyjeżdzam: '}]]
+                        <span th:text="${transportInfoService.getDriverTransportInfo(event.uuid, driver.id).startTime}">
+                            Data wyjazdu
+                        </span>
+                    </p>
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Liczba wolnych miejsc: '}]]
+                        <span class="badge"
+                              th:classappend="${transportInfoService.getDriverTransportInfo(event.uuid, driver.id).numberOfSeats eq 0} ? badge-danger : badge-success"
+                              th:text="${transportInfoService.getDriverTransportInfo(event.uuid, driver.id).numberOfSeats}">
+                            Liczba miejsc
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin: 10px; padding: 5px;">
+<h4 style="margin: 15px">Jadę jako autostopowicz: </h4>
+<ul th:each="event : ${stakeholderEventsAsHitchhiker}">
+    <li th:text="*{event.name}"></li>
+</ul>
 </div>
 </body>
 </html>

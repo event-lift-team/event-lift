@@ -30,6 +30,13 @@ public class StakeholderService {
         this.transportInfoService = transportInfoService;
     }
 
+    public Driver getStakeholderAsDriver(Long stakeholderId){
+        if (stakeholderRepository.findById(stakeholderId).isPresent()) {
+            return stakeholderRepository.findById(stakeholderId).get().getDriver();
+        }
+        return null;
+    }
+
     public Set<Event> getActualStakeholderEvents(Long stakeholderId, String stakeholderStatus) {
         if (stakeholderRepository.findById(stakeholderId).isPresent()) {
             Set<Event> events = new HashSet<>();
