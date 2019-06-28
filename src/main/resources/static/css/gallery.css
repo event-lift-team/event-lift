@@ -27,6 +27,12 @@ div.button {
 }
 
 .card-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-title-centered{
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;

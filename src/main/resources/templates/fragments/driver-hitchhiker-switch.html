@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="dh-switch" style="margin: 15px" class="btn-group float-right mt-2" role="group">
+    <a class="btn btn-primary" role="button"
+       th:href="${'/stakeholder-events/driver/' + @stakeholderContext.provideId()}">
+        Jadę jako kierowca
+    </a>
+    <a class="btn btn-primary" role="button"
+       th:href="${'/stakeholder-events/hitch-hiker/' + @stakeholderContext.provideId()}">
+        Jadę jako autostopowicz
+    </a>
+</div>
+</html>

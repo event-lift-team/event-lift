@@ -7,13 +7,15 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header-fragment"></div>
-<h4 style="margin: 15px;">Jadę jako kierowca</h4>
+<div th:replace="fragments/driver-hitchhiker-switch :: dh-switch"></div>
+<h4 style="margin: 15px">Kierowca</h4>
+<div class="alert alert-info" th:if="${stakeholderEventsAsDriver.size() eq 0}" th:text="${'Nie masz aktywnych wydarzeń jako kierowca'}"></div>
 <div style="margin: 10px; padding: 5px;">
     <div class="card-columns">
         <div class="card" th:each="event : ${stakeholderEventsAsDriver}">
             <div class="card-body">
-                <h5 class="card-title" th:text="*{event.name}"></h5>
-                <img class="gallery-img-sm" th:src="*{eventsService.findEventDtoById(event.uuid).eventImageUrl}">
+                <h5 class="card-title-centered" th:text="*{event.name}"></h5>
+                <img class="gallery-img-sm" th:src="*{event.imageUrl}">
                 <div class="panel-heading">
                     <h6 class="panel-title">
                         <a class="collapser" data-toggle="collapse" th:href="'#' + ${event.uuid}">
@@ -25,20 +27,22 @@
                     <p class="card-text"
                        th:inline="text">
                         [[${'Miejsce wydarzenia: '}]]
-                        <span th:text="${eventsService.findEventDtoById(event.uuid).embedded.venue.cityAndName}"></span>
+                        <span th:text="${event.cityAndName}"></span>
                     </p>
                     <p class="card-text"
                        th:inline="text">
                         [[${'Data wydarzenia: '}]]
-                        <span th:text="${eventsService.findEventDtoById(event.uuid).dates.start.localDateAndTime}"></span>
+                        <span th:text="${event.localDateAndTime}"></span>
                     </p>
                 </div>
                 <div class="panel-heading">
                     <h6 class="panel-title" style="padding-top: 5px">
-                        <a class="collapser" data-toggle="collapse" th:href="'#' + ${driver.id} + '' + ${event.uuid}">Szczegóły wyjazdu</a>
+                        <a class="collapser" data-toggle="collapse" th:href="'#' + ${driver.id} + '' + ${event.uuid}">Szczegóły
+                            wyjazdu</a>
                         <span>
                     <a role="button" style="text-decoration: none"
-                       th:href="@{/sign-up-for-event/{uuid} (uuid=${event.uuid})}">&nbsp;&nbsp;&nbsp;<i class="fa fa-edit"></i></a>
+                       th:href="@{/sign-up-for-event/{uuid} (uuid=${event.uuid})}">&nbsp;&nbsp;&nbsp;<i
+                            class="fa fa-edit"></i></a>
                     </span>
                     </h6>
                 </div>
@@ -70,12 +74,6 @@
             </div>
         </div>
     </div>
-</div>
-<div style="margin: 10px; padding: 5px;">
-<h4 style="margin: 15px">Jadę jako autostopowicz: </h4>
-<ul th:each="event : ${stakeholderEventsAsHitchhiker}">
-    <li th:text="*{event.name}"></li>
-</ul>
 </div>
 </body>
 </html>

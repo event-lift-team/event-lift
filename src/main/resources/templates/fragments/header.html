@@ -33,7 +33,6 @@
                         </select>
                         <button class="btn btn-outline-primary ml-sm-2">Wyszukaj wydarzenie</button>
                     </form>
-
                 </li>
             </ul>
             <ul class="nav navbar-nav ml-auto">
@@ -47,7 +46,7 @@
                     <a class="nav-link" th:if="${!@stakeholderContext.isLoggedIn()}"  th:href="@{/register}">Rejestracja</a>
                 </li>
                 <li>
-                    <a class="nav-link" th:if="${@stakeholderContext.isLoggedIn()}" th:href="${'/stakeholder-events/' + @stakeholderContext.provideId()}">Moje wydarzenia</a>
+                    <a class="nav-link" th:if="${@stakeholderContext.isLoggedIn()}" th:href="${'/stakeholder-events/driver/' + @stakeholderContext.provideId()}">Moje wydarzenia</a>
                 </li>
                 <li>
                     <a class="nav-link mr-sm-2"  th:if="${@stakeholderContext.isLoggedIn()}" th:href="@{/logout}" >Wyloguj</a>

@@ -47,6 +47,9 @@ public class EventsService {
         return Event.builder()
                 .name(eventDTO.getName())
                 .uuid(eventDTO.getId())
+                .cityAndName(eventDTO.getEmbedded().getVenue().getCityAndName())
+                .localDateAndTime(eventDTO.getDates().getStart().getLocalDateAndTime())
+                .imageUrl(eventDTO.getEventImageUrl())
                 .build();
     }
 

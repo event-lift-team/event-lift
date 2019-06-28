@@ -30,6 +30,13 @@ public class StakeholderService {
         this.transportInfoService = transportInfoService;
     }
 
+    public Hitchhiker getStakeholderAsHitchhiker(Long stakeholderId){
+        if (stakeholderRepository.findById(stakeholderId).isPresent()) {
+            return stakeholderRepository.findById(stakeholderId).get().getHitchhiker();
+        }
+        return null;
+    }
+
     public Driver getStakeholderAsDriver(Long stakeholderId){
         if (stakeholderRepository.findById(stakeholderId).isPresent()) {
             return stakeholderRepository.findById(stakeholderId).get().getDriver();
@@ -50,7 +57,8 @@ public class StakeholderService {
                 Hitchhiker hitchhiker = stakeholderRepository.findById(stakeholderId).get().getHitchhiker();
                 events.addAll(hitchhiker.getDrivers().stream()
                         .flatMap(driver -> driver.getEvents().stream()
-                                .filter(event -> transportInfoService.getDriverTransportInfo(event.getUuid(), driver.getId()).getStartTime().isAfter(LocalDateTime.now())))
+                                .filter(event -> transportInfoService.getDriverTransportInfo(event.getUuid(), driver.getId()).getStartTime().isAfter(LocalDateTime.now())
+                                && event.getHitchhikers().contains(hitchhiker)))
                         .collect(Collectors.toSet()));
             }
             return events;
