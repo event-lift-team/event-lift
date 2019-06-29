@@ -12,7 +12,7 @@
     <div class="card border-0">
         <div class="card-body">
             <h5 class="card-title">Dane na temat wydarzenia</h5>
-            <form style="margin-left: 15px" th:action="@{/sign-up-for-event/{uuid} (uuid=${eventDto.getId()})}"
+            <form style="margin-left: 15px" th:action="@{'/update-driver-event/' + ${eventDto.id} + '/' + ${driverId}}"
                   method="post"
                   th:object="${eventDto}">
                 <div class="form-row">
@@ -62,21 +62,21 @@
                 <div class="form-row">
                     <div class="col-xs-3 form-group input-group-sm mb-3">
                         <label for="startLocation">Skąd ruszam</label>
-                        <input class="form-control" id="startLocation" type="text" name="startLocation" required>
+                        <input class="form-control" id="startLocation" th:value="${driverTransportInfo.startLocation}" type="text" name="startLocation" required>
                     </div>
                     <div class="col-xs-3 form-group input-group-sm mb-3">
                         <label for="noOfSeats">Liczba miejsc</label>
-                        <input class="form-control" id="noOfSeats" name="noOfSeats" type="number" max="6" min="1"
+                        <input class="form-control" id="noOfSeats" th:value="${driverTransportInfo.numberOfSeats}" name="noOfSeats" type="number" max="6" min="1"
                                value="1">
                     </div>
                     <div class="col-xs-3 form-group input-group-sm mb-3">
                         <label for="startDate">Data wyjazdu</label>
-                        <input class="form-control" id="startDate" type="date" th:value="${today}"
+                        <input class="form-control" id="startDate" type="date" th:value="${driverTransportInfo.startLocalDate}"
                                th:max="*{dates.start.localDate}" name="startDate" required>
                     </div>
                     <div class="col-xs-3 form-group input-group-sm mb-3">
                         <label for="startTime">Godzina wyjazdu</label>
-                        <input id="startTime" class="form-control" type="time" value="00:00" min="00:00"
+                        <input id="startTime" class="form-control" type="time" th:value="${driverTransportInfo.startLocalTime}" min="00:00"
                                th:max="*{dates.start.localTime}" name="startTime" required>
                     </div>
                 </div>
@@ -84,6 +84,7 @@
                     <div class="col-xs-3 form-group input-group-sm mb-3">
                         <label for="additionalInf">Dodatkowe informacje</label>
                         <textarea class="form-control" id="additionalInf" rows="5" cols="50"
+                                  th:value="${driverTransportInfo.additionalInformation}"
                                   name="additionalInf"></textarea>
                     </div>
                 </div>

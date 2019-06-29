@@ -30,6 +30,30 @@
                               th:text="${transportInfoService.getDriverTransportInfo(eventUuid, driver).numberOfSeats}">
                         </span>
                     </p>
+                    <p class="card-text"
+                       th:if="${driver.email eq @stakeholderContext.provideUsername()}"
+                    th:inline="text">
+                        [[${'Kiedy wyjeżdzam: '}]]
+                        <span th:text="${transportInfoService.getDriverTransportInfo(eventUuid, driver).startTime}"></span>
+                    </p>
+                    <p class="card-text"
+                       th:unless="${driver.email eq @stakeholderContext.provideUsername()}"
+                       th:inline="text">
+                        [[${'Kiedy wyjeżdza: '}]]
+                        <span th:text="${transportInfoService.getDriverTransportInfo(eventUuid, driver).startTime}"></span>
+                    </p>
+                    <p class="card-text"
+                       th:if="${driver.email eq @stakeholderContext.provideUsername()}"
+                       th:inline="text">
+                        [[${'Skąd wyjeżdzam: '}]]
+                        <span th:text="${transportInfoService.getDriverTransportInfo(eventUuid, driver).startLocation}"></span>
+                    </p>
+                    <p class="card-text"
+                       th:unless="${driver.email eq @stakeholderContext.provideUsername()}"
+                       th:inline="text">
+                        [[${'Skąd wyjeżdza: '}]]
+                        <span th:text="${transportInfoService.getDriverTransportInfo(eventUuid, driver).startLocation}"></span>
+                    </p>
                     <div class="panel-heading">
                         <h6 class="panel-title">
                             <a class="collapser" data-toggle="collapse" th:href="'#' + ${driver.id}"

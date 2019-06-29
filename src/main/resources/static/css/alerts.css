@@ -12,3 +12,8 @@
     padding: 4px;
     display: inline-block;
 }
+
+.alert-info{
+    margin-left: 15px;
+    display: inline-block;
+}

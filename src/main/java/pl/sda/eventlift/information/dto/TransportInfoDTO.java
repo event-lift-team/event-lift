@@ -3,9 +3,7 @@ package pl.sda.eventlift.information.dto;
 import lombok.*;
 import pl.sda.eventlift.events.dto.EventSimpleDataDTO;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @Setter

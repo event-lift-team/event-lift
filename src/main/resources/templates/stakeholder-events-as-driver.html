@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stakeholder events</title>
+    <div th:replace="fragments/header :: headercss"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header-fragment"></div>
+<div th:replace="fragments/driver-hitchhiker-switch :: dh-switch"></div>
+<h4 style="margin: 15px">Kierowca</h4>
+<div class="alert alert-info" th:if="${stakeholderEventsAsDriver.size() eq 0}" th:text="${'Nie masz aktywnych wydarzeń jako kierowca'}"></div>
+<div style="margin: 10px; padding: 5px;">
+    <div class="card-columns">
+        <div class="card" th:each="event : ${stakeholderEventsAsDriver}">
+            <div class="card-body">
+                <h5 class="card-title-centered" th:text="*{event.name}"></h5>
+                <img class="gallery-img-sm" th:src="*{event.imageUrl}">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="collapser" data-toggle="collapse" th:href="'#' + ${event.uuid}">
+                            Szczegóły wydarzenia
+                        </a>
+                    </h6>
+                </div>
+                <div th:id="${event.uuid}" class="panel-collapse collapse in">
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Miejsce wydarzenia: '}]]
+                        <span th:text="${event.cityAndName}"></span>
+                    </p>
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Data wydarzenia: '}]]
+                        <span th:text="${event.localDateAndTime}"></span>
+                    </p>
+                </div>
+                <div class="panel-heading">
+                    <h6 class="panel-title" style="padding-top: 5px">
+                        <a class="collapser" data-toggle="collapse" th:href="'#' + ${driver.id} + '' + ${event.uuid}">Szczegóły
+                            wyjazdu</a>
+                        <span>
+                    <a role="button" style="text-decoration: none"
+                       th:href="@{'/update-driver-event/' + ${event.uuid} + '/' + ${driver.id}}">&nbsp;&nbsp;&nbsp;<i
+                            class="fa fa-edit"></i></a>
+                    </span>
+                    </h6>
+                </div>
+                <div th:id="${driver.id} + '' + ${event.uuid}" class="panel-collapse collapse in">
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Skąd wyjeżdzam: '}]]
+                        <span th:text="${transportInfoService.getDriverTransportInfo(event.uuid, driver.id).startLocation}">
+                            Miejsce startu
+                        </span>
+                    </p>
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Kiedy wyjeżdzam: '}]]
+                        <span th:text="${transportInfoService.getDriverTransportInfo(event.uuid, driver.id).startTime}">
+                            Data wyjazdu
+                        </span>
+                    </p>
+                    <p class="card-text"
+                       th:inline="text">
+                        [[${'Liczba wolnych miejsc: '}]]
+                        <span class="badge"
+                              th:classappend="${transportInfoService.getDriverTransportInfo(event.uuid, driver.id).numberOfSeats eq 0} ? badge-danger : badge-success"
+                              th:text="${transportInfoService.getDriverTransportInfo(event.uuid, driver.id).numberOfSeats}">
+                            Liczba miejsc
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

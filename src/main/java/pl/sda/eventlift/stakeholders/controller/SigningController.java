@@ -19,13 +19,10 @@ import java.util.Set;
 public class SigningController {
 
     private DriverSigningService driverSigningService;
-    private HitchhikerSigningService hitchhikerSigningService;
 
     @Autowired
-    public SigningController(DriverSigningService driverSigningService,
-                             HitchhikerSigningService hitchhikerSigningService) {
+    public SigningController(DriverSigningService driverSigningService) {
         this.driverSigningService = driverSigningService;
-        this.hitchhikerSigningService = hitchhikerSigningService;
     }
 
     @Autowired
@@ -40,7 +37,6 @@ public class SigningController {
             return "redirect:/nobody-goes/" + id;
         }
         Set<Driver> drivers = driverSigningService.getDriversByEventId(id);
-        Set<Hitchhiker> hitchhikers = hitchhikerSigningService.getHitchhikersByEventId(id);
         model.addAttribute("transportInfoService", transportInfoService);
         model.addAttribute("driverService", driverService);
         model.addAttribute("countries", Countries.values());

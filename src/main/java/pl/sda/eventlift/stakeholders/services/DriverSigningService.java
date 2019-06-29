@@ -8,6 +8,8 @@ import pl.sda.eventlift.events.pojo.EventDTO;
 import pl.sda.eventlift.events.repositories.EventRepository;
 import pl.sda.eventlift.events.services.EventsService;
 import pl.sda.eventlift.information.dto.TransportInfoDTO;
+import pl.sda.eventlift.information.model.TransportInfo;
+import pl.sda.eventlift.information.repositories.TransportInfoRepository;
 import pl.sda.eventlift.information.services.TransportInfoService;
 import pl.sda.eventlift.stakeholders.model.Driver;
 import pl.sda.eventlift.stakeholders.model.Stakeholder;
@@ -26,6 +28,7 @@ public class DriverSigningService {
     private StakeholderRepository stakeholderRepository;
     private HitchhikerRepository hitchhikerRepository;
     private TransportInfoService transportInfoService;
+    private TransportInfoRepository transportInfoRepository;
 
     @Autowired
     public DriverSigningService(EventRepository eventRepository,
@@ -33,13 +36,24 @@ public class DriverSigningService {
                                 DriverRepository driverRepository,
                                 StakeholderRepository stakeholderRepository,
                                 HitchhikerRepository hitchhikerRepository,
-                                TransportInfoService transportInfoService) {
+                                TransportInfoService transportInfoService,
+                                TransportInfoRepository transportInfoRepository) {
         this.eventRepository = eventRepository;
         this.eventsService = eventsService;
         this.driverRepository = driverRepository;
         this.stakeholderRepository = stakeholderRepository;
         this.hitchhikerRepository = hitchhikerRepository;
         this.transportInfoService = transportInfoService;
+        this.transportInfoRepository = transportInfoRepository;
+    }
+
+    public void updateDriverTransportInfo(Long driverId, String eventDtoId, TransportInfoDTO transportInfoDTO) {
+        TransportInfo driverTransportInfo = transportInfoService.getDriverTransportInfo(eventDtoId, driverId);
+        driverTransportInfo.setNumberOfSeats(transportInfoDTO.getNumberOfSeats());
+        driverTransportInfo.setStartLocation(transportInfoDTO.getStartLocation());
+        driverTransportInfo.setStartTime(driverTransportInfo.getStartTime());
+        driverTransportInfo.setAdditionalInformation(transportInfoDTO.getAdditionalInformation());
+        transportInfoRepository.save(driverTransportInfo);
     }
 
     public String relateDriverWithEvent(String driverEmail, String eventDtoId, TransportInfoDTO informationDto) {

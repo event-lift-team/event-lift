@@ -19,6 +19,9 @@ public class Event extends BaseEntity {
 
     private String name;
     private String uuid;
+    private String localDateAndTime;
+    private String imageUrl;
+    private String cityAndName;
     @ManyToMany(mappedBy = "events")
     private Set<Driver> drivers;
     @ManyToMany(mappedBy = "events")

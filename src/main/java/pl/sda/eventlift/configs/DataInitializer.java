@@ -36,15 +36,15 @@ public class DataInitializer implements InitializingBean {
             Role role_user = roleRepository.save(new Role("ROLE_USER"));
             Role role_admin = roleRepository.save(new Role("ROLE_ADMIN"));
             Stakeholder stakeholder_user = Stakeholder.builder()
-                    .firstName("Przemek")
-                    .lastName("Slowik")
-                    .email("przemek2829@wp.pl")
+                    .firstName("Admin")
+                    .lastName("Admin")
+                    .email("admin@admin.pl")
                     .passwordHash(passwordEncoder.encode("pass"))
                     .roles(Sets.newHashSet(role_user)).build();
             Stakeholder stakeholder_admin = Stakeholder.builder()
-                    .firstName("Przemyslaw")
-                    .lastName("Slowik")
-                    .email("przemyslaw.slowik@19e.pl")
+                    .firstName("User")
+                    .lastName("User")
+                    .email("user@user.pl")
                     .passwordHash(passwordEncoder.encode("pass"))
                     .roles(Sets.newHashSet(role_admin)).build();
             if (stakeholderRepository.count() == 0 || eventRepository.count() == 0) {
