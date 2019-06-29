@@ -7,6 +7,11 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header-fragment"></div>
-<p>Nikt się jeszcze nie zapisał na wydarzenie</p>
+<div align="center">
+    <p>Nikt nie zapisał się jeszcze na wydarzenie</p>
+    <a class="btn btn-outline-primary btn-sm" role="button"
+       th:href="@{/sign-up-for-event/{uuid} (uuid=${eventUuid})}">
+        Zapisz się</a>
+</div>
 </body>
 </html>
