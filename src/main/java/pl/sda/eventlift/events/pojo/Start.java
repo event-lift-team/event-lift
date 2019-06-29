@@ -4,7 +4,6 @@ package pl.sda.eventlift.events.pojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
-import lombok.Getter;
 
 @Builder
 public class Start {

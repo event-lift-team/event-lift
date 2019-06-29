@@ -41,7 +41,7 @@
                             wyjazdu</a>
                         <span>
                     <a role="button" style="text-decoration: none"
-                       th:href="@{/sign-up-for-event/{uuid} (uuid=${event.uuid})}">&nbsp;&nbsp;&nbsp;<i
+                       th:href="@{'/update-driver-event/' + ${event.uuid} + '/' + ${driver.id}}">&nbsp;&nbsp;&nbsp;<i
                             class="fa fa-edit"></i></a>
                     </span>
                     </h6>
